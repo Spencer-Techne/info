@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Jersey 2025 Gubernatorial Primary: An Interactive Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 380px;
+            }
+        }
+        .text-shadow-custom {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        }
+        .stat-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .gemini-output {
+            background-color: #0f172a;
+            border-left: 4px solid #38bdf8;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.5rem;
+            min-height: 150px;
+        }
+        .gemini-output h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #f8fafc;
+            margin-bottom: 0.5rem;
+        }
+         .gemini-output p, .gemini-output li {
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+        .gemini-output ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #38bdf8;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-[#0f172a] text-[#e2e8f0]">
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center py-12">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4 text-shadow-custom">New Jersey 2025 Gubernatorial Primary</h1>
+            <p class="text-xl text-[#94a3b8] max-w-3xl mx-auto">A data-driven analysis of Jack Ciattarelli's decisive victory, the fragmented Democratic field, and the strategic landscape for the general election.</p>
+        </header>
+
+        <main class="space-y-12">
+
+            <section id="statewide-overview">
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-[#1e293b] rounded-2xl shadow-2xl p-8">
+                    <div class="md:col-span-1">
+                        <h2 class="text-3xl font-bold text-[#f8fafc] mb-4">A Tale of Two Primaries</h2>
+                        <p class="text-lg text-[#cbd5e1] mb-6">The June 10th primaries revealed two vastly different paths to nomination. Republican Jack Ciattarelli secured a commanding, unified victory, backed by a key endorsement from Donald Trump. In contrast, Democrat Mikie Sherrill emerged from a crowded, fractured field with just over a third of the vote, signaling a significant challenge of party consolidation ahead of the general election.</p>
+                        <div class="grid grid-cols-2 gap-6 text-center">
+                            <div class="stat-card rounded-xl p-4">
+                                <p class="text-5xl font-extrabold text-[#7dd3fc]">67.3%</p>
+                                <p class="mt-2 text-lg font-semibold text-[#f8fafc]">Ciattarelli's GOP Vote</p>
+                            </div>
+                            <div class="stat-card rounded-xl p-4">
+                                <p class="text-5xl font-extrabold text-[#f472b6]">34.5%</p>
+                                <p class="mt-2 text-lg font-semibold text-[#f8fafc]">Sherrill's Dem Vote</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:col-span-1">
+                        <div class="chart-container h-80 md:h-96">
+                            <canvas id="statewideVoteShare"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="gop-primary-deep-dive" class="bg-[#1e293b] rounded-2xl shadow-2xl p-8">
+                <h2 class="text-3xl font-bold text-center text-[#f8fafc] mb-2">Ciattarelli's Statewide Domination</h2>
+                <p class="text-lg text-[#cbd5e1] text-center max-w-3xl mx-auto mb-8">Winning all 21 counties, Jack Ciattarelli demonstrated overwhelming strength. However, the margin of victory varied, revealing nuances in his support across the state and highlighting areas where his primary opponents had a notable presence.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-[#f8fafc] mb-4">GOP Primary Vote Share by Candidate</h3>
+                         <p class="text-[#cbd5e1] mb-4">This chart breaks down the vote distribution in the Republican primary. Ciattarelli's share underscores the impact of Donald Trump's endorsement, which helped consolidate the vast majority of the party base behind his candidacy, leaving his rivals with smaller segments of the electorate.</p>
+                        <div class="chart-container h-80">
+                            <canvas id="gopPrimaryBreakdown"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                         <h3 class="text-2xl font-semibold text-[#f8fafc] mb-4">Ciattarelli's Performance Across Counties</h3>
+                         <p class="text-[#cbd5e1] mb-4">This chart visualizes Ciattarelli's winning percentage in each New Jersey county. The data shows overwhelming strength in counties like Passaic and Atlantic, contrasted with tighter races in counties like Mercer and Hunterdon, where Bill Spadea's challenge was more significant.</p>
+                        <div class="chart-container h-80">
+                            <canvas id="ciattarelliCountyPerformance"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="dem-primary-deep-dive" class="bg-[#1e293b] rounded-2xl shadow-2xl p-8">
+                <h2 class="text-3xl font-bold text-center text-[#f8fafc] mb-2">The Fractured Democratic Field</h2>
+                 <p class="text-lg text-[#cbd5e1] text-center max-w-3xl mx-auto mb-8">Mikie Sherrill won the nomination, but nearly two-thirds of Democratic voters chose someone else. This fragmentation across a six-candidate field presents her with the immediate challenge of unifying diverse geographical and ideological factions within her party.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-[#f8fafc] mb-4">Democratic Primary Vote Distribution</h3>
+                        <p class="text-[#cbd5e1] mb-4">Sherrill's 34.5% plurality win is starkly illustrated here. The significant shares secured by rivals like Ras Baraka and Steve Fulop highlight the divided nature of the Democratic electorate and the diverse constituencies Sherrill must now court to build a winning coalition for November.</p>
+                        <div class="chart-container h-80">
+                            <canvas id="demPrimaryBreakdown"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-[#f8fafc] mb-4">Where Sherrill's Opponents Found Support</h3>
+                         <p class="text-[#cbd5e1] mb-4">This chart highlights the counties where Sherrill faced her toughest competition. Ras Baraka's strength in Essex and Union, and Steve Sweeney's dominant performance in his home base of Gloucester, pinpoint specific regions where Democratic party unity cannot be taken for granted and where Ciattarelli could find strategic openings.</p>
+                        <div class="chart-container h-80">
+                            <canvas id="demOpponentStrongholds"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="trump-alignment" class="bg-[#1e293b] rounded-2xl shadow-2xl p-8">
+                <h2 class="text-3xl font-bold text-center text-[#f8fafc] mb-2">Ciattarelli vs. Trump: Base Alignment</h2>
+                <p class="text-lg text-[#cbd5e1] text-center max-w-3xl mx-auto mb-8">How does Ciattarelli's 2025 primary support compare to Donald Trump's 2024 general election performance? This analysis reveals areas of strong base alignment and potential divergence, offering clues to the general election strategy.</p>
+                <div>
+                     <h3 class="text-2xl font-semibold text-[#f8fafc] mb-4 text-center">County Comparison: Ciattarelli '25 Primary vs. Trump '24 General</h3>
+                     <p class="text-[#cbd5e1] mb-4 max-w-3xl mx-auto text-center">This chart plots each county based on Trump's 2024 general election vote share and Ciattarelli's 2025 primary vote share. The clustering shows a strong correlation, indicating Ciattarelli is effectively consolidating the Trump base. The distance above the diagonal line represents Ciattarelli's successful mobilization of the more partisan primary electorate.</p>
+                    <div class="chart-container mx-auto h-96 md:h-[500px] max-w-4xl">
+                        <canvas id="ciattarelliVsTrump"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="strategic-takeaways" class="bg-[#1e293b] rounded-2xl shadow-2xl p-8">
+                <h2 class="text-3xl font-bold text-center text-[#f8fafc] mb-8">Path to Victory: Key Strategic Factors</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="stat-card rounded-xl p-6">
+                        <h3 class="text-2xl font-bold text-[#7dd3fc] mb-3">➡️ Exploit Democratic Disunity</h3>
+                        <p class="text-[#cbd5e1]">With 66% of Democrats voting against Sherrill, there's a clear opportunity. Target messaging to progressive voters who backed Ras Baraka and union households loyal to Steve Sweeney, focusing on themes of "change" and economic policies.</p>
+                    </div>
+                    <div class="stat-card rounded-xl p-6">
+                        <h3 class="text-2xl font-bold text-[#f472b6] mb-3">📈 Build on Trump's 2024 Gains</h3>
+                        <p class="text-[#cbd5e1]">Trump narrowed the margin in NJ and made significant gains with Latino voters. Intensify outreach in "growth zones" like Passaic County, focusing on "pocketbook concerns" that resonate with this demographic.</p>
+                    </div>
+                     <div class="stat-card rounded-xl p-6">
+                        <h3 class="text-2xl font-bold text-[#6ee7b7] mb-3">👤 Define Ciattarelli Beyond Trump</h3>
+                        <p class="text-[#cbd5e1]">Sherrill's campaign will frame Ciattarelli as a "Trump lackey." Counter this by promoting a "New Jersey First" vision centered on affordability and governance, leveraging his 2021 near-win to show broader appeal.</p>
+                    </div>
+                     <div class="stat-card rounded-xl p-6">
+                        <h3 class="text-2xl font-bold text-[#fde047] mb-3">🎯 Target Sherrill's Vulnerabilities</h3>
+                        <p class="text-[#cbd5e1]">Focus on counties where Sherrill lost or won narrowly (Essex, Gloucester, Union). Contrast Ciattarelli's unified primary win with the fragmented Democratic vote in these specific regions to highlight softer support for her.</p>
+                    </div>
+                    <div class="stat-card rounded-xl p-6">
+                        <h3 class="text-2xl font-bold text-[#c084fc] mb-3">🗳️ Adapt to New Voting Patterns</h3>
+                        <p class="text-[#cbd5e1]">Democrats have a strong lead in early and mail-in voting. The GOP must implement a robust chase program for these ballots to compete effectively before Election Day, rather than relying solely on in-person turnout.</p>
+                    </div>
+                    <div class="stat-card rounded-xl p-6">
+                        <h3 class="text-2xl font-bold text-[#fb923c] mb-3">🏰 Solidify the Base</h3>
+                        <p class="text-[#cbd5e1]">Continuously message the decisive primary mandate and Trump's endorsement to maintain enthusiasm among the core Republican base, while reaching out to voters who backed primary rivals to ensure complete party unity.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="gemini-toolkit" class="bg-[#1e293b] rounded-2xl shadow-2xl p-8">
+                <h2 class="text-3xl font-bold text-center text-[#f8fafc] mb-2">✨ AI-Powered Campaign Toolkit</h2>
+                <p class="text-lg text-[#cbd5e1] text-center max-w-3xl mx-auto mb-8">Leverage the power of Google's Gemini API to transform this data into actionable campaign materials. Generate a strategic memo or create localized talking points for any county in New Jersey.</p>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    
+                    <div class="stat-card rounded-xl p-6">
+                        <h3 class="text-2xl font-semibold text-[#f8fafc] mb-4">Generate Strategic Memo</h3>
+                        <p class="text-[#cbd5e1] mb-4">Click the button below to generate a comprehensive strategic memo for the Ciattarelli campaign, synthesizing all the key data points from the primary results into a forward-looking plan for the general election.</p>
+                        <button id="generateMemoBtn" class="w-full bg-[#38bdf8] text-white font-bold py-3 px-4 rounded-lg hover:bg-[#0ea5e9] transition-colors duration-300">
+                            ✨ Generate Memo
+                        </button>
+                        <div id="memoOutput" class="gemini-output hidden"></div>
+                    </div>
+                    
+                    <div class="stat-card rounded-xl p-6">
+                         <h3 class="text-2xl font-semibold text-[#f8fafc] mb-4">Generate Localized Talking Points</h3>
+                         <p class="text-[#cbd5e1] mb-4">Select a county to generate tailored talking points for a campaign stop. The AI will use county-specific data to craft messages that resonate with local voters.</p>
+                         <div class="flex flex-col sm:flex-row gap-4">
+                             <select id="countySelect" class="w-full sm:w-1/2 bg-[#2a3a55] border border-[#475569] text-white rounded-lg p-3">
+                                 <option value="">Select a County...</option>
+                             </select>
+                             <button id="generatePointsBtn" class="w-full sm:w-1/2 bg-[#f472b6] text-white font-bold py-3 px-4 rounded-lg hover:bg-[#ec4899] transition-colors duration-300">
+                                ✨ Get Talking Points
+                             </button>
+                         </div>
+                         <div id="pointsOutput" class="gemini-output hidden"></div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+        
+        <footer class="text-center py-8 mt-12 border-t border-[#334155]">
+            <p class="text-[#94a3b8]">Infographic based on deep research into the New Jersey 2025 Gubernatorial Primary Elections.</p>
+             <p class="text-xs text-[#475569] mt-4">This infographic was generated using Chart.js for canvas-based visualizations. No SVG or Mermaid.js libraries were used in its creation. AI features powered by Google Gemini.</p>
+        </footer>
+    </div>
+
+<script>
+const primaryPalette = {
+    ciattarelli: 'rgba(59, 130, 246, 0.8)', // Blue 500
+    spadea: 'rgba(239, 68, 68, 0.8)', // Red 500
+    bramnick: 'rgba(249, 115, 22, 0.8)', // Orange 500
+    sherrill: 'rgba(236, 72, 153, 0.8)', // Pink 500
+    baraka: 'rgba(139, 92, 246, 0.8)', // Violet 500
+    fulop: 'rgba(16, 185, 129, 0.8)', // Emerald 500
+    gottheimer: 'rgba(14, 165, 233, 0.8)', // Cyan 500
+    spiller: 'rgba(245, 158, 11, 0.8)', // Amber 500
+    sweeney: 'rgba(99, 102, 241, 0.8)', // Indigo 500
+    other: 'rgba(107, 114, 128, 0.7)', // Gray 500
+    gridColor: 'rgba(71, 85, 105, 0.5)',
+    textColor: '#e2e8f0',
+};
+
+const tooltipConfig = {
+    plugins: {
+        tooltip: {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                      return label.join(' ');
+                    } else {
+                      return label;
+                    }
+                }
+            }
+        },
+        legend: {
+            labels: {
+                color: primaryPalette.textColor,
+                font: {
+                    size: 14
+                }
+            }
+        }
+    }
+};
+
+const countyData = {
+    labels: ['Passaic', 'Atlantic', 'Cape May', 'Cumberland', 'Salem', 'Essex', 'Bergen', 'Gloucester', 'Sussex', 'Hudson', 'Camden', 'Ocean', 'Morris', 'Warren', 'Monmouth', 'Burlington', 'Middlesex', 'Somerset', 'Union', 'Hunterdon', 'Mercer'],
+    ciattarelli: [82, 81, 80, 80, 79, 78, 77, 75, 75, 73, 72, 67, 67, 66, 63, 63, 59, 58, 58, 52, 48],
+};
+
+const trumpVsCiattarelliData = [
+    { county: 'Atlantic', trump: 50.55, ciattarelli: 81 }, { county: 'Bergen', trump: 47.12, ciattarelli: 77 },
+    { county: 'Burlington', trump: 40.89, ciattarelli: 63 }, { county: 'Camden', trump: 35.42, ciattarelli: 72 },
+    { county: 'Cape May', trump: 58.68, ciattarelli: 80 }, { county: 'Cumberland', trump: 51.25, ciattarelli: 80 },
+    { county: 'Essex', trump: 26.78, ciattarelli: 78 }, { county: 'Gloucester', trump: 50.42, ciattarelli: 75 },
+    { county: 'Hudson', trump: 34.41, ciattarelli: 73 }, { county: 'Hunterdon', trump: 52.16, ciattarelli: 52 },
+    { county: 'Mercer', trump: 31.92, ciattarelli: 48 }, { county: 'Middlesex', trump: 44.31, ciattarelli: 59 },
+    { county: 'Monmouth', trump: 54.59, ciattarelli: 63 }, { county: 'Morris', trump: 50.14, ciattarelli: 67 },
+    { county: 'Ocean', trump: 67.22, ciattarelli: 67 }, { county: 'Passaic', trump: 49.65, ciattarelli: 82 },
+    { county: 'Salem', trump: 58.64, ciattarelli: 79 }, { county: 'Somerset', trump: 41.55, ciattarelli: 58 },
+    { county: 'Sussex', trump: 63.85, ciattarelli: 75 }, { county: 'Union', trump: 37.03, ciattarelli: 58 },
+    { county: 'Warren', trump: 60.59, ciattarelli: 66 }
+];
+
+function wrapLabel(str, maxWidth) {
+    if (str.length <= maxWidth) {
+        return str;
+    }
+    const words = str.split(' ');
+    let lines = [];
+    let currentLine = words[0];
+
+    for (let i = 1; i < words.length; i++) {
+        if (currentLine.length + words[i].length + 1 < maxWidth) {
+            currentLine += ' ' + words[i];
+        } else {
+            lines.push(currentLine);
+            currentLine = words[i];
+        }
+    }
+    lines.push(currentLine);
+    return lines;
+}
+
+function formatGeminiResponse(text) {
+    return text
+        .replace(/\*\*(.*?)\*\*/g, '<h4>$1</h4>') 
+        .replace(/\* (.*?)(?=\n\*|\n\n|$)/g, '<li>$1</li>') 
+        .replace(/(\r\n|\n|\r)/g, "<br>")
+        .replace(/<br><li>/g, '<li>') 
+        .replace(/<\/li><br>/g, '</li>');
+}
+
+async function callGemini(prompt) {
+    const apiKey = ""; // Canvas will provide the key
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+    const payload = {
+        contents: [{
+            role: "user",
+            parts: [{ text: prompt }]
+        }]
+    };
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            const errorBody = await response.json();
+            console.error("Gemini API Error:", errorBody);
+            return `Error: The AI service failed to respond. Status: ${response.status}. Please check the console for details.`;
+        }
+        
+        const result = await response.json();
+
+        if (result.candidates && result.candidates.length > 0) {
+            return result.candidates[0].content.parts[0].text;
+        } else {
+             console.error("Gemini API Error: No candidates in response", result);
+             return "Error: Received an invalid response from the AI service.";
+        }
+
+    } catch (error) {
+        console.error("Fetch Error:", error);
+        return "Error: Could not connect to the AI service. Please check your network connection and the browser console.";
+    }
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    new Chart(document.getElementById('statewideVoteShare'), {
+        type: 'bar',
+        data: {
+            labels: ['Republican Primary', 'Democratic Primary'],
+            datasets: [{
+                label: "Ciattarelli's Winning %", data: [67.3, 0], backgroundColor: primaryPalette.ciattarelli, borderColor: 'rgba(59, 130, 246, 1)', borderWidth: 1
+            }, {
+                label: "Sherrill's Winning %", data: [0, 34.5], backgroundColor: primaryPalette.sherrill, borderColor: 'rgba(236, 72, 153, 1)', borderWidth: 1
+            },{
+                label: 'Other GOP Candidates', data: [100 - 67.3, 0], backgroundColor: primaryPalette.other, borderColor: 'rgba(107, 114, 128, 1)', borderWidth: 1
+            }, {
+                label: 'Other Dem Candidates', data: [0, 100 - 34.5], backgroundColor: primaryPalette.other, borderColor: 'rgba(107, 114, 128, 1)', borderWidth: 1
+            }]
+        },
+        options: { ...tooltipConfig, responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true, ticks: { color: primaryPalette.textColor, font: { size: 14 } }, grid: { color: primaryPalette.gridColor }}, y: { stacked: true, beginAtZero: true, max: 100, ticks: { color: primaryPalette.textColor, font: { size: 14 }, callback: (value) => value + '%' }, grid: { color: primaryPalette.gridColor }}}}
+    });
+
+    new Chart(document.getElementById('gopPrimaryBreakdown'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Jack Ciattarelli', 'Bill Spadea', 'Jon Bramnick', 'Other'],
+            datasets: [{ data: [67.3, 22.4, 6.3, 4.0], backgroundColor: [primaryPalette.ciattarelli, primaryPalette.spadea, primaryPalette.bramnick, primaryPalette.other], borderColor: '#0f172a', borderWidth: 4 }]
+        },
+        options: { ...tooltipConfig, responsive: true, maintainAspectRatio: false }
+    });
+    
+    new Chart(document.getElementById('ciattarelliCountyPerformance'), {
+        type: 'bar',
+        data: {
+            labels: countyData.labels.map(label => wrapLabel(label, 16)),
+            datasets: [{ label: "% Vote for Ciattarelli", data: countyData.ciattarelli, backgroundColor: primaryPalette.ciattarelli, borderColor: 'rgba(59, 130, 246, 1)', borderWidth: 1 }]
+        },
+        options: { ...tooltipConfig, responsive: true, maintainAspectRatio: false, indexAxis: 'y', scales: { x: { beginAtZero: true, ticks: { color: primaryPalette.textColor, callback: (value) => value + '%' }, grid: { color: primaryPalette.gridColor }}, y: { ticks: { color: primaryPalette.textColor, font: {size: 10} }, grid: { display: false }}}}
+    });
+    
+    new Chart(document.getElementById('demPrimaryBreakdown'), {
+        type: 'pie',
+        data: {
+            labels: ['Mikie Sherrill', 'Ras Baraka', 'Steve Fulop', 'Josh Gottheimer', 'Sean Spiller', 'Steve Sweeney'],
+            datasets: [{ data: [34.5, 20.4, 16.4, 12.2, 10.7, 8.8], backgroundColor: [primaryPalette.sherrill, primaryPalette.baraka, primaryPalette.fulop, primaryPalette.gottheimer, primaryPalette.spiller, primaryPalette.sweeney], borderColor: '#0f172a', borderWidth: 4 }]
+        },
+        options: { ...tooltipConfig, responsive: true, maintainAspectRatio: false }
+    });
+
+    new Chart(document.getElementById('demOpponentStrongholds'), {
+        type: 'bar',
+        data: {
+            labels: ['Gloucester (Sweeney)', 'Essex (Baraka)', 'Union (Baraka)', 'Atlantic (Fragmented)'],
+            datasets: [{ label: 'Sherrill %', data: [22.3, 34.0, 27.3, 23.3], backgroundColor: primaryPalette.sherrill }, { label: 'Leading Opponent %', data: [40.4, 40.0, 39.6, 20.9], backgroundColor: primaryPalette.baraka }]
+        },
+        options: { ...tooltipConfig, responsive: true, maintainAspectRatio: false, scales: { x: { ticks: { color: primaryPalette.textColor, font: {size: 10} }, grid: { color: primaryPalette.gridColor }}, y: { beginAtZero: true, ticks: { color: primaryPalette.textColor, callback: (value) => value + '%' }, grid: { color: primaryPalette.gridColor }}}}
+    });
+
+    new Chart(document.getElementById('ciattarelliVsTrump'), {
+        type: 'scatter',
+        data: {
+            datasets: [{ label: 'County Performance', data: trumpVsCiattarelliData.map(d => ({ x: d.trump, y: d.ciattarelli })), backgroundColor: primaryPalette.ciattarelli, pointRadius: 8, pointHoverRadius: 12 }]
+        },
+        options: { ...tooltipConfig, responsive: true, maintainAspectRatio: false, plugins: { tooltip: { callbacks: { label: function(context) { const countyData = trumpVsCiattarelliData[context.dataIndex]; return `${countyData.county}: Trump ${countyData.trump}%, Ciattarelli ${countyData.ciattarelli}%`; }, title: () => '' }}, legend: { display: false }}, scales: { x: { type: 'linear', position: 'bottom', title: { display: true, text: "Trump 2024 General Election %", color: primaryPalette.textColor, font: {size: 14, weight: 'bold'} }, min: 25, max: 70, ticks: { color: primaryPalette.textColor, callback: (value) => value + '%' }, grid: { color: primaryPalette.gridColor }}, y: { title: { display: true, text: "Ciattarelli 2025 Primary %", color: primaryPalette.textColor, font: {size: 14, weight: 'bold'} }, min: 45, max: 85, ticks: { color: primaryPalette.textColor, callback: (value) => value + '%' }, grid: { color: primaryPalette.gridColor }}}}
+    });
+    
+    // Gemini Toolkit Logic
+    const generateMemoBtn = document.getElementById('generateMemoBtn');
+    const memoOutput = document.getElementById('memoOutput');
+    const generatePointsBtn = document.getElementById('generatePointsBtn');
+    const pointsOutput = document.getElementById('pointsOutput');
+    const countySelect = document.getElementById('countySelect');
+    
+    countyData.labels.forEach(county => {
+        const option = document.createElement('option');
+        option.value = county;
+        option.textContent = county;
+        countySelect.appendChild(option);
+    });
+
+    generateMemoBtn.addEventListener('click', async () => {
+        memoOutput.classList.remove('hidden');
+        memoOutput.innerHTML = '<div class="spinner"></div>';
+
+        const prompt = `Act as a senior campaign strategist for Jack Ciattarelli's gubernatorial campaign. Based on the following NJ primary election data, write a concise but comprehensive strategic memo outlining the key takeaways and a path to victory in the general election.
+
+        **GOP Primary Results:**
+        - Jack Ciattarelli won with 67.3% of the vote, sweeping all 21 counties.
+        - His main rival, Bill Spadea, received 22.4%.
+        - This signifies strong party unity and a clear mandate, amplified by Donald Trump's endorsement.
+
+        **Democratic Primary Results:**
+        - Mikie Sherrill won with only 34.5% of the vote.
+        - The field was highly fractured: Ras Baraka (20.4%), Steve Fulop (16.4%), and Steve Sweeney (8.8%) took significant shares.
+        - This means 65.5% of Democrats voted for someone other than Sherrill, revealing deep divisions.
+        - Key opponent strongholds: Baraka was strong in Essex and Union counties. Sweeney won his home of Gloucester county.
+
+        **General Election Context:**
+        - The goal is to defeat Mikie Sherrill.
+        - We must leverage our unity against their disunity.
+        - We need to appeal to Trump voters while also winning over moderate and independent voters, referencing Ciattarelli's near-win in 2021.
+        
+        **Your memo should have three sections:**
+        1.  **State of the Race:** A brief summary of our strong position vs. the Democrats' fractured one.
+        2.  **Key Strategic Pillars:** 3-4 high-level strategic imperatives for the campaign.
+        3.  **Targeting Opportunities:** Specific recommendations on how to exploit Democratic weaknesses, such as appealing to Baraka's or Sweeney's voters.
+
+        The tone should be confident, analytical, and actionable.`;
+
+        const responseText = await callGemini(prompt);
+        memoOutput.innerHTML = formatGeminiResponse(responseText);
+    });
+
+    generatePointsBtn.addEventListener('click', async () => {
+        const selectedCounty = countySelect.value;
+        if (!selectedCounty) {
+            pointsOutput.classList.remove('hidden');
+            pointsOutput.innerHTML = "<p>Please select a county first.</p>";
+            return;
+        }
+
+        pointsOutput.classList.remove('hidden');
+        pointsOutput.innerHTML = '<div class="spinner"></div>';
+        
+        const countyIndex = countyData.labels.indexOf(selectedCounty);
+        const ciattarelliPerf = countyData.ciattarelli[countyIndex];
+        const trumpPerfData = trumpVsCiattarelliData.find(d => d.county === selectedCounty);
+        const trumpPerf = trumpPerfData ? trumpPerfData.trump : "N/A";
+
+        const prompt = `Act as a campaign communications director for Jack Ciattarelli. You are preparing him for a campaign stop in **${selectedCounty} County, New Jersey**.
+
+        Here is the relevant data for this county:
+        - In our GOP primary, Jack Ciattarelli won **${ciattarelliPerf}%** of the vote in ${selectedCounty} County. This was a very strong performance.
+        - For context, Donald Trump won **${trumpPerf}%** of the vote here in the 2024 general election.
+
+        Your task is to generate 3-4 concise, powerful, and locally-resonant talking points for Jack to use. The talking points should:
+        1. Acknowledge the strong primary support in the county.
+        2. Connect with voters on key issues like affordability, taxes, and a "New Jersey First" message.
+        3. Contrast our campaign's unity and momentum with the fractured Democratic party.
+        
+        Keep the points brief and impactful. Format them as a bulleted list.`;
+
+        const responseText = await callGemini(prompt);
+        pointsOutput.innerHTML = `<h4>Talking Points for ${selectedCounty} County</h4>` + formatGeminiResponse(responseText);
+    });
+});
+</script>
+</body>
+</html>
